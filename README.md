@@ -44,7 +44,7 @@ Você pode visualizar o projeto no Tinkercad pelo link abaixo:
 | 3          | Resistores 220Ω (para LEDs) |
 | 1          | Buzzer                 |
 | 1          | LCD 16x2 com interface paralela |
-| Cabos jumpers e protoboard          |
+|         | Cabos jumpers e protoboard  
 
 ## 📦 Como usar
 
