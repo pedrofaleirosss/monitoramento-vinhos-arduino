@@ -1,6 +1,10 @@
 // C++ Code
 // CP1 - Edge Computing & Computer Sistems
 // Pedro Faleiros 562523
+// Luan Felix 565541
+// João Lopes 565737
+// Felipe Campos 562752
+// Leandro Farias 566488
 
 // Biblioteca para o display LCD
 #include <LiquidCrystal.h>
