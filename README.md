@@ -32,6 +32,9 @@ Você pode visualizar o projeto no Tinkercad pelo link abaixo:
 ## 📸 Imagem do Circuito
 
 ![image](https://github.com/user-attachments/assets/698576e6-440c-45fd-ae5f-f71bb5559219)
+![image](https://github.com/user-attachments/assets/df155879-0874-4429-b073-c200e6193618)
+![image](https://github.com/user-attachments/assets/75fd7cfa-8b16-4804-b421-bad39c52ebd0)
+![image](https://github.com/user-attachments/assets/e0771108-588b-4301-abfc-45674bc8ac0e)
 
 ## 🧪 Componentes Utilizados
 
@@ -44,7 +47,8 @@ Você pode visualizar o projeto no Tinkercad pelo link abaixo:
 | 3          | Resistores 220Ω (para LEDs) |
 | 1          | Buzzer                 |
 | 1          | LCD 16x2 com interface paralela |
-|         | Cabos jumpers e protoboard  
+| 1          | Protoboard             |
+| Diversos   | Cabos jumpers          |  
 
 ## 📦 Como usar
 
@@ -53,6 +57,6 @@ Você pode visualizar o projeto no Tinkercad pelo link abaixo:
 3. Faça o upload para o Arduino.
 4. Ajuste os limites de alerta se necessário no código:
    ```cpp
-   if (luminosidadePercent <= 60) {
+   if (luminosidadePercent <= 40) {
      // Ambiente ideal
    }
