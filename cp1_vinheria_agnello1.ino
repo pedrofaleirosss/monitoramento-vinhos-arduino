@@ -29,6 +29,18 @@ byte image20[8] = {B11000, B01000, B10000, B00000, B00000, B00000, B00000, B0000
 byte image19[8] = {B10101, B01010, B00000, B01111, B11000, B10000, B00000, B00000};
 byte image18[8] = {B00100, B00011, B00000, B00000, B00000, B00001, B00001, B00001};
 
+void desenhaLogo() {
+  // Desenha a logo usando os caracteres personalizados
+  lcd.setCursor(0, 1); lcd.write(byte(0));
+  lcd.setCursor(0, 0); lcd.write(byte(1));
+  lcd.setCursor(1, 0); lcd.write(byte(2));
+  lcd.setCursor(2, 0); lcd.write(byte(3));
+  lcd.setCursor(3, 0); lcd.write(byte(4));
+  lcd.setCursor(3, 1); lcd.write(byte(5));
+  lcd.setCursor(2, 1); lcd.write(byte(6));
+  lcd.setCursor(1, 1); lcd.write(byte(7)); 
+}
+
 void setup()
 {
   // Define os pinos dos LEDs e buzzer como saída
@@ -54,15 +66,8 @@ void setup()
   lcd.begin(16,2);
   lcd.clear();
   
-  // Desenha a logo usando os caracteres personalizados
-  lcd.setCursor(0, 1); lcd.write(byte(0));
-  lcd.setCursor(0, 0); lcd.write(byte(1));
-  lcd.setCursor(1, 0); lcd.write(byte(2));
-  lcd.setCursor(2, 0); lcd.write(byte(3));
-  lcd.setCursor(3, 0); lcd.write(byte(4));
-  lcd.setCursor(3, 1); lcd.write(byte(5));
-  lcd.setCursor(2, 1); lcd.write(byte(6));
-  lcd.setCursor(1, 1); lcd.write(byte(7));
+  // Mostra o mascote no LCD
+  desenhaLogo();
   
   // Mensagem ao lado do desenho
   lcd.setCursor(5, 0);
@@ -73,10 +78,22 @@ void setup()
 
 void loop()
 {
-  lcd.display(); // Garante que o LCD continue visível
+  // Garante que o LCD continue visível
+  lcd.display(); 
+  
+  int leituraLDR = 0; // Variável que guarda o valor do ldr
+  const int numMedicoes = 10; // Número de medições para fazer a média
+  String status = ""; // Variável que guarda o status da vinheria
+  
+  // Faz 10 leituras e soma
+  for (int i = 0; i < numMedicoes; i++) {
+    leituraLDR += analogRead(ldrPin);
+    delay(10); // Pequeno delay entre leituras para dar tempo de estabilizar
+  }
 
-  // Lê o valor analógico do sensor de luminosidade
-  int leituraLDR = analogRead(ldrPin); // valor entre 54 - 974
+  // Calcula a média
+  leituraLDR = leituraLDR / numMedicoes;
+  
   // Mapeia para porcentagem de 0 a 100%
   int luminosidadePercent = map(leituraLDR, 54, 974, 0, 100);
 
@@ -92,23 +109,42 @@ void loop()
   noTone(buzzer);
 
   // Verifica em qual faixa a luminosidade está e aciona os sinais correspondentes
-  if (luminosidadePercent <= 60) {
+  if (luminosidadePercent <= 40) {
     // Ambiente ideal - Acende led verde
+    status = "Ideal";
     digitalWrite(ledVerde, HIGH);
     delay(3000);
-  } else if (luminosidadePercent <= 80) {
+  } else if (luminosidadePercent <= 60) {
     // Alerta - Acende led amarelo e toca buzina 
+    status = "Alerta";
     digitalWrite(ledAmarelo, HIGH);
     tone(buzzer, 150); // Frequência de 150 Hz
   	delay(3000); // Dura 3 segundos
   	noTone(buzzer); // Para o som
   } else {
     // Crítico - Acende led vermelho e toca buzina
+    status = "Critico";
     digitalWrite(ledVermelho, HIGH);
     tone(buzzer, 200); // Frequência de 200 Hz
   	delay(3000); // Dura 3 segundos
   	noTone(buzzer); // Para o som
   }
+  
+  // Limpa a tela do LCD
+  lcd.clear();
+  
+  // Mostra o mascote no LCD
+  desenhaLogo();
+  
+  // Mostra o valor da % de luminosidade no LCD
+  lcd.setCursor(5, 0);
+  lcd.print("Luz:");
+  lcd.print(luminosidadePercent);
+  lcd.print("%");
+  
+  // Mostra o status (Ideal, Alerta, Crítico) no LCD
+  lcd.setCursor(5, 1);
+  lcd.print(status);
 
-  delay(1000); // Tempo entre leituras
+  delay(1000); // Espera 1 segundo antes da próxima medição
 }
